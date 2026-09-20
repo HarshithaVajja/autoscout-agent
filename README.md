@@ -50,4 +50,8 @@ Built to demonstrate automation + AI + structured data extraction skills relevan
 - `intelligence-log-sample.png` — example output with real data
 - `demo.gif` / `demo.mp4` — short demo of the flow running live
 
+## Known Limitations
 
+- Some websites (e.g., sites with strict anti-bot protection) block Jina's reader from extracting content, returning "Access Denied" instead of article text. This is a common challenge in web-scraping pipelines.
+- Search results occasionally return SEO/marketing pages instead of genuine news articles when a company's keyword overlaps with unrelated popular search terms.
+- A future improvement would be adding a content-quality check (e.g., minimum word count) before passing text to the AI summarization step, and retrying with the next search result if the first one fails.
