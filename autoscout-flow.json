@@ -1,0 +1,488 @@
+﻿{
+  "name": "AutoScout Agent",
+  "type": "SHARED",
+  "summary": "",
+  "description": "",
+  "tags": [],
+  "blogUrl": "",
+  "metadata": {
+    "externalId": "PRkKVwPPo7xmML8zyemY3"
+  },
+  "author": "Harshitha vajja",
+  "categories": [],
+  "pieces": [
+    "@activepieces/piece-schedule",
+    "@activepieces/piece-google-sheets",
+    "@activepieces/piece-http",
+    "@activepieces/piece-ai"
+  ],
+  "flows": [
+    {
+      "displayName": "AutoScout Agent",
+      "trigger": {
+        "name": "trigger",
+        "valid": true,
+        "displayName": "Every Day",
+        "nextAction": {
+          "name": "step_1",
+          "skip": false,
+          "type": "PIECE",
+          "valid": true,
+          "settings": {
+            "input": {
+              "auth": "{{connections['SAH5OS5KAJqpiEFgLaveY']}}",
+              "sheetId": 0,
+              "headerRow": 1,
+              "matchCase": false,
+              "columnName": "A",
+              "numberOfRows": "100",
+              "spreadsheetId": "1jq_q_KmtUHbchsohDLSUHb1NrSOgFZsppVBZ-9it9oM",
+              "useHeaderNames": false,
+              "includeTeamDrives": false
+            },
+            "pieceName": "@activepieces/piece-google-sheets",
+            "actionName": "find_rows",
+            "sampleData": {},
+            "pieceVersion": "0.17.0",
+            "propertySettings": {
+              "sheetId": {
+                "type": "MANUAL"
+              },
+              "headerRow": {
+                "type": "MANUAL"
+              },
+              "matchCase": {
+                "type": "MANUAL"
+              },
+              "columnName": {
+                "type": "MANUAL"
+              },
+              "searchValue": {
+                "type": "MANUAL"
+              },
+              "startingRow": {
+                "type": "MANUAL"
+              },
+              "numberOfRows": {
+                "type": "MANUAL"
+              },
+              "spreadsheetId": {
+                "type": "MANUAL"
+              },
+              "useHeaderNames": {
+                "type": "MANUAL"
+              },
+              "includeTeamDrives": {
+                "type": "MANUAL"
+              }
+            },
+            "errorHandlingOptions": {
+              "retryOnFailure": {
+                "value": false
+              },
+              "continueOnFailure": {
+                "value": false
+              }
+            }
+          },
+          "nextAction": {
+            "name": "step_2",
+            "skip": false,
+            "type": "LOOP_ON_ITEMS",
+            "valid": true,
+            "settings": {
+              "items": "{{step_1['output']}}",
+              "sampleData": {}
+            },
+            "displayName": "Loop on Items",
+            "firstLoopAction": {
+              "name": "step_6",
+              "skip": false,
+              "type": "ROUTER",
+              "valid": true,
+              "children": [
+                null,
+                {
+                  "name": "step_7",
+                  "skip": false,
+                  "type": "PIECE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "url": "https://s.jina.ai/{{step_2['output']['item']['values']['B']}}",
+                      "body": {},
+                      "method": "GET",
+                      "headers": {
+                        "Authorization": "Bearer jina_629cde61722e49f783180107aca6e14367O_FSkmZP4_EYDqgpjUfpczGzEf"
+                      },
+                      "authType": "NONE",
+                      "body_type": "none",
+                      "use_proxy": false,
+                      "authFields": {},
+                      "failureMode": "continue_none",
+                      "queryParams": {},
+                      "proxy_settings": {},
+                      "followRedirects": false,
+                      "response_is_binary": false
+                    },
+                    "pieceName": "@activepieces/piece-http",
+                    "actionName": "send_request",
+                    "sampleData": {},
+                    "pieceVersion": "0.12.0",
+                    "propertySettings": {
+                      "url": {
+                        "type": "MANUAL"
+                      },
+                      "body": {
+                        "type": "MANUAL",
+                        "schema": {}
+                      },
+                      "method": {
+                        "type": "MANUAL"
+                      },
+                      "headers": {
+                        "type": "MANUAL"
+                      },
+                      "timeout": {
+                        "type": "MANUAL"
+                      },
+                      "authType": {
+                        "type": "MANUAL"
+                      },
+                      "body_type": {
+                        "type": "MANUAL"
+                      },
+                      "use_proxy": {
+                        "type": "MANUAL"
+                      },
+                      "authFields": {
+                        "type": "MANUAL",
+                        "schema": {}
+                      },
+                      "failureMode": {
+                        "type": "MANUAL"
+                      },
+                      "queryParams": {
+                        "type": "MANUAL"
+                      },
+                      "proxy_settings": {
+                        "type": "MANUAL"
+                      },
+                      "followRedirects": {
+                        "type": "MANUAL"
+                      },
+                      "response_is_binary": {
+                        "type": "MANUAL"
+                      }
+                    },
+                    "errorHandlingOptions": {
+                      "retryOnFailure": {
+                        "value": false
+                      },
+                      "continueOnFailure": {
+                        "value": false
+                      }
+                    }
+                  },
+                  "nextAction": {
+                    "name": "step_8",
+                    "skip": false,
+                    "type": "PIECE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "url": "https://r.jina.ai/{{step_7['output']['body']['data'][0]['url']}}",
+                        "body": {},
+                        "method": "GET",
+                        "headers": {
+                          "Authorization": "Bearer jina_629cde61722e49f783180107aca6e14367O_FSkmZP4_EYDqgpjUfpczGzEf"
+                        },
+                        "authType": "NONE",
+                        "body_type": "none",
+                        "use_proxy": false,
+                        "authFields": {},
+                        "failureMode": "continue_none",
+                        "queryParams": {},
+                        "proxy_settings": {},
+                        "followRedirects": false,
+                        "response_is_binary": false
+                      },
+                      "pieceName": "@activepieces/piece-http",
+                      "actionName": "send_request",
+                      "sampleData": {},
+                      "pieceVersion": "0.12.0",
+                      "propertySettings": {
+                        "url": {
+                          "type": "MANUAL"
+                        },
+                        "body": {
+                          "type": "MANUAL",
+                          "schema": {}
+                        },
+                        "method": {
+                          "type": "MANUAL"
+                        },
+                        "headers": {
+                          "type": "MANUAL"
+                        },
+                        "timeout": {
+                          "type": "MANUAL"
+                        },
+                        "authType": {
+                          "type": "MANUAL"
+                        },
+                        "body_type": {
+                          "type": "MANUAL"
+                        },
+                        "use_proxy": {
+                          "type": "MANUAL"
+                        },
+                        "authFields": {
+                          "type": "MANUAL",
+                          "schema": {}
+                        },
+                        "failureMode": {
+                          "type": "MANUAL"
+                        },
+                        "queryParams": {
+                          "type": "MANUAL"
+                        },
+                        "proxy_settings": {
+                          "type": "MANUAL"
+                        },
+                        "followRedirects": {
+                          "type": "MANUAL"
+                        },
+                        "response_is_binary": {
+                          "type": "MANUAL"
+                        }
+                      },
+                      "errorHandlingOptions": {
+                        "retryOnFailure": {
+                          "value": false
+                        },
+                        "continueOnFailure": {
+                          "value": false
+                        }
+                      }
+                    },
+                    "nextAction": {
+                      "name": "step_9",
+                      "skip": false,
+                      "type": "PIECE",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "model": "anthropic/claude-haiku-4.5",
+                          "prompt": "Read the following article text and respond ONLY in this exact format, with no extra commentary:\nHeadline: [one line headline]\nSummary: [2-sentence summary]\nSentiment: [Positive/Negative/Neutral]\nArticle text:{{step_8['output']['body']['data']['content']}}",
+                          "provider": {
+                            "configId": "00jQ9Gq53TUATWq1k2ymb",
+                            "provider": "activepieces"
+                          },
+                          "webSearch": false,
+                          "maxOutputTokens": 2000,
+                          "webSearchOptions": {}
+                        },
+                        "pieceName": "@activepieces/piece-ai",
+                        "actionName": "askAi",
+                        "sampleData": {},
+                        "pieceVersion": "0.11.0",
+                        "propertySettings": {
+                          "model": {
+                            "type": "MANUAL"
+                          },
+                          "prompt": {
+                            "type": "MANUAL"
+                          },
+                          "provider": {
+                            "type": "MANUAL"
+                          },
+                          "webSearch": {
+                            "type": "MANUAL"
+                          },
+                          "creativity": {
+                            "type": "MANUAL"
+                          },
+                          "conversationKey": {
+                            "type": "MANUAL"
+                          },
+                          "maxOutputTokens": {
+                            "type": "MANUAL"
+                          },
+                          "webSearchOptions": {
+                            "type": "MANUAL",
+                            "schema": {}
+                          }
+                        },
+                        "errorHandlingOptions": {
+                          "retryOnFailure": {
+                            "value": false
+                          },
+                          "continueOnFailure": {
+                            "value": false
+                          }
+                        }
+                      },
+                      "nextAction": {
+                        "name": "step_10",
+                        "skip": false,
+                        "type": "PIECE",
+                        "valid": true,
+                        "settings": {
+                          "input": {
+                            "auth": "{{connections['SAH5OS5KAJqpiEFgLaveY']}}",
+                            "values": {
+                              "A": "2026-09-20",
+                              "B": "{{step_2['output']['item']['values']['A']}}",
+                              "C": "{{step_9['output']}}",
+                              "D": "{{step_9['output']}}",
+                              "E": "{{step_7['output']['body']['data'][0]['url']}}"
+                            },
+                            "sheetId": 501286992,
+                            "as_string": false,
+                            "spreadsheetId": "1jq_q_KmtUHbchsohDLSUHb1NrSOgFZsppVBZ-9it9oM",
+                            "first_row_headers": true,
+                            "includeTeamDrives": false
+                          },
+                          "pieceName": "@activepieces/piece-google-sheets",
+                          "actionName": "insert_row",
+                          "sampleData": {},
+                          "pieceVersion": "0.17.0",
+                          "propertySettings": {
+                            "values": {
+                              "type": "MANUAL",
+                              "schema": {
+                                "A": {
+                                  "type": "SHORT_TEXT",
+                                  "required": false,
+                                  "displayName": "Date",
+                                  "defaultValue": ""
+                                },
+                                "B": {
+                                  "type": "SHORT_TEXT",
+                                  "required": false,
+                                  "displayName": "Company",
+                                  "defaultValue": ""
+                                },
+                                "C": {
+                                  "type": "SHORT_TEXT",
+                                  "required": false,
+                                  "displayName": "Headline",
+                                  "defaultValue": ""
+                                },
+                                "D": {
+                                  "type": "SHORT_TEXT",
+                                  "required": false,
+                                  "displayName": "Summary",
+                                  "defaultValue": ""
+                                },
+                                "E": {
+                                  "type": "SHORT_TEXT",
+                                  "required": false,
+                                  "displayName": "Source URL",
+                                  "defaultValue": ""
+                                }
+                              }
+                            },
+                            "sheetId": {
+                              "type": "MANUAL"
+                            },
+                            "as_string": {
+                              "type": "MANUAL"
+                            },
+                            "spreadsheetId": {
+                              "type": "MANUAL"
+                            },
+                            "first_row_headers": {
+                              "type": "MANUAL"
+                            },
+                            "includeTeamDrives": {
+                              "type": "MANUAL"
+                            }
+                          },
+                          "errorHandlingOptions": {
+                            "retryOnFailure": {
+                              "value": false
+                            },
+                            "continueOnFailure": {
+                              "value": false
+                            }
+                          }
+                        },
+                        "displayName": "Add Row",
+                        "lastUpdatedDate": "2026-09-20T15:52:17.915Z"
+                      },
+                      "displayName": "Ask AI",
+                      "lastUpdatedDate": "2026-09-20T15:52:17.915Z"
+                    },
+                    "displayName": "Send HTTP request",
+                    "lastUpdatedDate": "2026-09-20T15:52:17.915Z"
+                  },
+                  "displayName": "Send HTTP request",
+                  "lastUpdatedDate": "2026-09-20T15:52:17.915Z"
+                }
+              ],
+              "settings": {
+                "branches": [
+                  {
+                    "branchName": "Branch 1",
+                    "branchType": "CONDITION",
+                    "conditions": [
+                      [
+                        {
+                          "operator": "TEXT_EXACTLY_MATCHES",
+                          "firstValue": "{{step_2['output']['item']['values']['A']}}",
+                          "secondValue": "Company",
+                          "caseSensitive": false
+                        }
+                      ]
+                    ]
+                  },
+                  {
+                    "branchName": "Otherwise",
+                    "branchType": "FALLBACK"
+                  }
+                ],
+                "sampleData": {},
+                "executionType": "EXECUTE_FIRST_MATCH"
+              },
+              "displayName": "Router",
+              "lastUpdatedDate": "2026-09-20T15:52:17.914Z"
+            },
+            "lastUpdatedDate": "2026-09-20T15:52:17.914Z"
+          },
+          "displayName": "Find Rows",
+          "lastUpdatedDate": "2026-09-20T15:52:17.914Z"
+        },
+        "lastUpdatedDate": "2026-09-20T15:52:17.914Z",
+        "type": "PIECE_TRIGGER",
+        "settings": {
+          "sampleData": {},
+          "propertySettings": {
+            "timezone": {
+              "type": "MANUAL"
+            },
+            "hour_of_the_day": {
+              "type": "MANUAL"
+            },
+            "run_on_weekends": {
+              "type": "MANUAL"
+            }
+          },
+          "pieceName": "@activepieces/piece-schedule",
+          "pieceVersion": "0.1.22",
+          "triggerName": "every_day",
+          "input": {
+            "timezone": "UTC",
+            "hour_of_the_day": 8,
+            "run_on_weekends": true
+          }
+        }
+      },
+      "valid": true,
+      "schemaVersion": "27",
+      "notes": []
+    }
+  ],
+  "status": "PUBLISHED"
+}
